@@ -62,6 +62,8 @@ const translations = {
     discordUnavailable:
       "Widget Discord jest wyłączony. Włącz Server Widget w ustawieniach serwera Discord, aby pokazać liczby.",
     discordJoin: "Join Discord",
+    discordOpen: "Otwórz Discord",
+    mapOpen: "Otwórz w Google Maps",
     footerHours: "Pon. - Pt. / 12:00 - 02:00 · Sob. - Niedz. / 24h",
   },
   en: {
@@ -111,6 +113,8 @@ const translations = {
     discordUnavailable:
       "Discord widget is disabled. Enable Server Widget in Discord server settings to show the counts.",
     discordJoin: "Join Discord",
+    discordOpen: "Open Discord",
+    mapOpen: "Open in Google Maps",
     footerHours: "Mon - Fri / 12:00 - 02:00 · Sat - Sun / 24h",
   },
   uk: {
@@ -160,6 +164,8 @@ const translations = {
     discordUnavailable:
       "Discord-віджет вимкнено. Увімкни Server Widget у налаштуваннях Discord-сервера, щоб показати цифри.",
     discordJoin: "Приєднатись",
+    discordOpen: "Відкрити Discord",
+    mapOpen: "Відкрити в Google Maps",
     footerHours: "Пн - Пт / 12:00 - 02:00 · Сб - Нд / 24 год",
   },
 };

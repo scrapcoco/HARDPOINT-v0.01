@@ -605,7 +605,8 @@ h2 {
 }
 
 .contact-widgets,
-.discord-panel {
+.discord-panel,
+.map-panel {
   display: grid;
 }
 
@@ -709,15 +710,35 @@ h2 {
 
 .discord-widget,
 .google-map-widget {
+  display: block;
   border: 1px solid var(--line);
   border-radius: 0.5rem;
   background: rgba(20, 20, 19, 0.54);
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.34);
 }
 
+.map-panel {
+  gap: 0.7rem;
+}
+
 .google-map-widget {
   width: 100%;
   min-height: 24rem;
+}
+
+.widget-link {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 221, 61, 0.36);
+  border-radius: 0.5rem;
+  color: #171714;
+  background: var(--yellow);
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-align: center;
 }
 
 .footer {
@@ -821,6 +842,17 @@ h2 {
     grid-template-columns: 1fr;
   }
 
+  .contact-stage {
+    align-content: start;
+    gap: 1.4rem;
+  }
+
+  .contact-widgets {
+    width: 100%;
+    min-width: 0;
+    gap: 1rem;
+  }
+
   .hero {
     align-items: center;
   }
@@ -852,15 +884,35 @@ h2 {
 
   .discord-panel {
     grid-template-columns: 1fr;
+    min-width: 0;
   }
 
-  .discord-status,
+  .discord-status {
+    min-height: 21rem;
+  }
+
+  .discord-widget,
+  .google-map-widget {
+    width: 100%;
+    min-width: 0;
+  }
+
   .discord-widget {
+    height: 24rem;
     min-height: 24rem;
+  }
+
+  .google-map-widget {
+    height: 20rem;
+    min-height: 20rem;
   }
 
   .discord-status strong {
     font-size: clamp(1.8rem, 9vw, 3rem);
+  }
+
+  .widget-link {
+    display: flex;
   }
 
   .footer {
