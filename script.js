@@ -1,6 +1,10 @@
 const canvas = document.querySelector("#arena");
 const ctx = canvas.getContext("2d", { alpha: true });
 const sections = [...document.querySelectorAll(".section-screen")];
+const menuToggle = document.querySelector(".menu-toggle");
+const siteMenu = document.querySelector("#site-menu");
+const hoursToggle = document.querySelector(".hours-toggle");
+const hoursPanel = document.querySelector("#hours-panel");
 const languageButtons = [...document.querySelectorAll("[data-lang]")];
 const discordOnline = document.querySelector("[data-discord-online]");
 const discordMembers = document.querySelector("[data-discord-members]");
@@ -18,9 +22,18 @@ const translations = {
     headerAria: "Główna nawigacja",
     linksAria: "Linki HardPoint Cyber Club",
     languageAria: "Wybór języka",
+    menuToggleAria: "Otwórz menu",
+    menuCloseAria: "Zamknij menu",
     navBooking: "Rezerwacja",
     navPasses: "Karnety",
     navContacts: "Kontakt",
+    hoursButton: "Godziny otwarcia",
+    hoursKicker: "Godziny otwarcia",
+    hoursWeekdays: "Pon. - Pt.",
+    hoursWeekdaysTime: "12:00 - 02:00",
+    hoursWeekend: "Sob. - Niedz.",
+    hoursWeekendTime: "24h",
+    hoursNote: "W święta godziny mogą się różnić.",
     topCall: "Zadzwoń",
     heroLead:
       "Miejsce, w którym gra brzmi mocniej niż zwykły wieczór: wydajne stanowiska, turniejowy klimat i szybkie wejście do rozgrywki.",
@@ -48,7 +61,7 @@ const translations = {
     discordUnavailable:
       "Widget Discord jest wyłączony. Włącz Server Widget w ustawieniach serwera Discord, aby pokazać liczby.",
     discordJoin: "Join Discord",
-    footerHours: "Codziennie / 12:00 - 02:00",
+    footerHours: "Pon. - Pt. / 12:00 - 02:00 · Sob. - Niedz. / 24h",
   },
   en: {
     lang: "en",
@@ -57,9 +70,18 @@ const translations = {
     headerAria: "Main navigation",
     linksAria: "HardPoint Cyber Club links",
     languageAria: "Language selection",
+    menuToggleAria: "Open menu",
+    menuCloseAria: "Close menu",
     navBooking: "Booking",
     navPasses: "Passes",
     navContacts: "Contact",
+    hoursButton: "Opening hours",
+    hoursKicker: "Opening hours",
+    hoursWeekdays: "Mon - Fri",
+    hoursWeekdaysTime: "12:00 - 02:00",
+    hoursWeekend: "Sat - Sun",
+    hoursWeekendTime: "24h",
+    hoursNote: "Holiday hours may vary.",
     topCall: "Call",
     heroLead:
       "A place where the game hits harder than a regular night: powerful stations, tournament energy, and a fast jump into the match.",
@@ -87,7 +109,7 @@ const translations = {
     discordUnavailable:
       "Discord widget is disabled. Enable Server Widget in Discord server settings to show the counts.",
     discordJoin: "Join Discord",
-    footerHours: "Open daily / 12:00 - 02:00",
+    footerHours: "Mon - Fri / 12:00 - 02:00 · Sat - Sun / 24h",
   },
   uk: {
     lang: "uk",
@@ -96,9 +118,18 @@ const translations = {
     headerAria: "Головна навігація",
     linksAria: "Посилання HardPoint Cyber Club",
     languageAria: "Вибір мови",
+    menuToggleAria: "Відкрити меню",
+    menuCloseAria: "Закрити меню",
     navBooking: "Бронювання",
     navPasses: "Абонементи",
     navContacts: "Контакти",
+    hoursButton: "Години роботи",
+    hoursKicker: "Години роботи",
+    hoursWeekdays: "Пн - Пт",
+    hoursWeekdaysTime: "12:00 - 02:00",
+    hoursWeekend: "Сб - Нд",
+    hoursWeekendTime: "24 год",
+    hoursNote: "У святкові дні графік може змінюватися.",
     topCall: "Подзвонити",
     heroLead:
       "Місце, де гра звучить сильніше за звичайний вечір: потужні станції, турнірна атмосфера і швидкий старт матчу.",
@@ -126,7 +157,7 @@ const translations = {
     discordUnavailable:
       "Discord-віджет вимкнено. Увімкни Server Widget у налаштуваннях Discord-сервера, щоб показати цифри.",
     discordJoin: "Приєднатись",
-    footerHours: "Щодня / 12:00 - 02:00",
+    footerHours: "Пн - Пт / 12:00 - 02:00 · Сб - Нд / 24 год",
   },
 };
 
@@ -138,6 +169,30 @@ let pointerY = 0.5;
 let nodes = [];
 
 const palette = ["#ffdd3d", "#f4f4f4", "#8f8f86", "#3f3f3d"];
+
+function setMenuOpen(isOpen) {
+  const dictionary = translations[document.documentElement.lang] || translations.pl;
+  document.body.classList.toggle("is-menu-open", isOpen);
+  menuToggle?.classList.toggle("is-open", isOpen);
+  menuToggle?.setAttribute("aria-expanded", String(isOpen));
+  menuToggle?.setAttribute("aria-label", isOpen ? dictionary.menuCloseAria : dictionary.menuToggleAria);
+  siteMenu?.setAttribute("aria-hidden", String(!isOpen));
+}
+
+function toggleMenu() {
+  setMenuOpen(!document.body.classList.contains("is-menu-open"));
+}
+
+function setHoursOpen(isOpen) {
+  if (!hoursPanel || !hoursToggle) return;
+  hoursPanel.hidden = !isOpen;
+  hoursToggle.classList.toggle("is-active", isOpen);
+  hoursToggle.setAttribute("aria-expanded", String(isOpen));
+}
+
+function toggleHours() {
+  setHoursOpen(hoursPanel?.hidden ?? true);
+}
 
 function setLanguage(language) {
   const dictionary = translations[language] || translations.pl;
@@ -161,6 +216,11 @@ function setLanguage(language) {
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
   });
+
+  if (menuToggle) {
+    const isOpen = document.body.classList.contains("is-menu-open");
+    menuToggle.setAttribute("aria-label", isOpen ? dictionary.menuCloseAria : dictionary.menuToggleAria);
+  }
 
   try {
     localStorage.setItem("hardpoint-language", dictionary.lang);
@@ -372,6 +432,26 @@ window.addEventListener("scroll", updateScroll, { passive: true });
 window.addEventListener("pointermove", (event) => {
   pointerX = event.clientX / window.innerWidth;
   pointerY = event.clientY / window.innerHeight;
+});
+
+menuToggle?.addEventListener("click", toggleMenu);
+hoursToggle?.addEventListener("click", toggleHours);
+
+siteMenu?.querySelectorAll("a, button").forEach((control) => {
+  control.addEventListener("click", (event) => {
+    if (event.currentTarget === hoursToggle) return;
+    setMenuOpen(false);
+  });
+});
+
+document.addEventListener("click", (event) => {
+  if (!document.body.classList.contains("is-menu-open")) return;
+  if (siteMenu?.contains(event.target) || menuToggle?.contains(event.target)) return;
+  setMenuOpen(false);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") setMenuOpen(false);
 });
 
 languageButtons.forEach((button) => {

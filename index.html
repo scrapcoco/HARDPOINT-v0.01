@@ -18,12 +18,41 @@
         <img class="brand-logo" src="assets/logo/hardpoint-logo.png" alt="">
         <span>HardPoint</span>
       </a>
-      <div class="topbar-controls">
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-controls="site-menu"
+        aria-expanded="false"
+        aria-label="Otwórz menu"
+        data-i18n-aria="menuToggleAria"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="topbar-controls" id="site-menu" aria-hidden="true">
         <nav class="topnav">
           <a href="#booking" data-i18n="navBooking">Rezerwacja</a>
           <a href="#passes" data-i18n="navPasses">Karnety</a>
           <a href="#contacts" data-i18n="navContacts">Kontakt</a>
+          <button
+            class="hours-toggle"
+            type="button"
+            aria-controls="hours-panel"
+            aria-expanded="false"
+            data-i18n="hoursButton"
+          >
+            Godziny otwarcia
+          </button>
         </nav>
+        <div class="hours-panel" id="hours-panel" hidden>
+          <span class="card-kicker" data-i18n="hoursKicker">Godziny otwarcia</span>
+          <strong data-i18n="hoursWeekdays">Pon. - Pt.</strong>
+          <p data-i18n="hoursWeekdaysTime">12:00 - 02:00</p>
+          <strong data-i18n="hoursWeekend">Sob. - Niedz.</strong>
+          <p data-i18n="hoursWeekendTime">24h</p>
+          <small data-i18n="hoursNote">W święta godziny mogą się różnić.</small>
+        </div>
         <div class="top-socials" aria-label="Linki HardPoint Cyber Club" data-i18n-aria="linksAria">
           <a class="top-link" href="https://google.com/maps/place/HardPoint+Cyber+Club/@53.4262451,14.5534613,704m/data=!3m1!1e3!4m6!3m5!1s0x47aa095142f79d6d:0xddc7f4811a2880c6!8m2!3d53.4264287!4d14.5540305!16s%2Fg%2F11yhfnxq2y?authuser=0&amp;entry=ttu&amp;g_ep=EgoyMDI2MDUyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noreferrer">
             <span>Google Maps</span>
