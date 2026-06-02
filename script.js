@@ -10,6 +10,10 @@ const discordOnline = document.querySelector("[data-discord-online]");
 const discordMembers = document.querySelector("[data-discord-members]");
 const discordNote = document.querySelector("[data-discord-note]");
 const discordLinks = [...document.querySelectorAll("[data-discord-link]")];
+const bookingTrigger = document.querySelector("[data-booking-trigger]");
+const bookingModal = document.querySelector("[data-booking-modal]");
+const bookingDialog = bookingModal?.querySelector(".booking-options-card");
+const bookingCloseControls = [...document.querySelectorAll("[data-booking-close]")];
 
 const DISCORD_WIDGET_URL = "https://discord.com/api/guilds/1423444368819359756/widget.json";
 const DISCORD_INVITE_URL = "https://discord.com/api/v10/invites";
@@ -43,7 +47,12 @@ const translations = {
     bookingCardTitle: "Rezerwacja",
     bookingCardText: "Wolne stanowiska, wieczorne sesje i szybki start dla ekipy.",
     bookingButton: "Rezerwuj",
-    bookingButtonAria: "Zadzwoń, aby zarezerwować",
+    bookingButtonAria: "Wybierz sposób rezerwacji",
+    bookingChoiceTitle: "Jak chcesz zarezerwować?",
+    bookingChoiceText: "Wybierz szybki telefon albo przejdź do rezerwacji online.",
+    bookingCall: "Zadzwoń",
+    bookingOnline: "Rezerwacja online",
+    bookingChoiceCloseAria: "Zamknij wybór rezerwacji",
     passesEyebrow: "02 / Karnety",
     passesTitle: "Godzina, noc albo regularne treningi - wybierz tryb dla swojej drużyny.",
     passStartTitle: "3 godziny",
@@ -94,7 +103,12 @@ const translations = {
     bookingCardTitle: "Booking",
     bookingCardText: "Available stations, evening sessions, and a quick start for your squad.",
     bookingButton: "Book now",
-    bookingButtonAria: "Call to book",
+    bookingButtonAria: "Choose booking method",
+    bookingChoiceTitle: "How do you want to book?",
+    bookingChoiceText: "Choose a quick call or continue to online booking.",
+    bookingCall: "Call us",
+    bookingOnline: "Online booking",
+    bookingChoiceCloseAria: "Close booking choice",
     passesEyebrow: "02 / Passes",
     passesTitle: "One hour, all night, or regular training - pick the mode for your team.",
     passStartTitle: "3 hours",
@@ -145,7 +159,12 @@ const translations = {
     bookingCardTitle: "Бронювання",
     bookingCardText: "Вільні місця, вечірні сесії та швидкий старт для команди.",
     bookingButton: "Забронювати",
-    bookingButtonAria: "Подзвонити для бронювання",
+    bookingButtonAria: "Вибрати спосіб бронювання",
+    bookingChoiceTitle: "Як хочеш забронювати?",
+    bookingChoiceText: "Обери швидкий дзвінок або перейди до онлайн-бронювання.",
+    bookingCall: "Подзвонити",
+    bookingOnline: "Онлайн-бронювання",
+    bookingChoiceCloseAria: "Закрити вибір бронювання",
     passesEyebrow: "02 / Абонементи",
     passesTitle: "Година, ніч або регулярні тренування - обери режим для своєї команди.",
     passStartTitle: "3 години",
@@ -201,6 +220,21 @@ function setHoursOpen(isOpen) {
 
 function toggleHours() {
   setHoursOpen(hoursPanel?.hidden ?? true);
+}
+
+function openBookingOptions() {
+  if (!bookingModal) return;
+  bookingModal.hidden = false;
+  document.body.classList.add("is-booking-modal-open");
+  setMenuOpen(false);
+  bookingDialog?.focus();
+}
+
+function closeBookingOptions() {
+  if (!bookingModal) return;
+  bookingModal.hidden = true;
+  document.body.classList.remove("is-booking-modal-open");
+  bookingTrigger?.focus();
 }
 
 function setLanguage(language) {
@@ -445,6 +479,14 @@ window.addEventListener("pointermove", (event) => {
 
 menuToggle?.addEventListener("click", toggleMenu);
 hoursToggle?.addEventListener("click", toggleHours);
+bookingTrigger?.addEventListener("click", openBookingOptions);
+bookingCloseControls.forEach((control) => control.addEventListener("click", closeBookingOptions));
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && bookingModal && !bookingModal.hidden) {
+    closeBookingOptions();
+  }
+});
 
 siteMenu?.querySelectorAll("a, button").forEach((control) => {
   control.addEventListener("click", (event) => {

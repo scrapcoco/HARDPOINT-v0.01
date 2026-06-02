@@ -103,14 +103,44 @@
           <span class="card-kicker">Online slot</span>
           <strong data-i18n="bookingCardTitle">Rezerwacja</strong>
           <p data-i18n="bookingCardText">Wolne stanowiska, wieczorne sesje i szybki start dla ekipy.</p>
-          <a class="action-button" href="tel:+48000000000" aria-label="Zadzwoń, aby zarezerwować" data-i18n-aria="bookingButtonAria">
+          <button
+            class="action-button booking-choice-trigger"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="booking-options"
+            aria-label="Wybierz sposób rezerwacji"
+            data-booking-trigger
+            data-i18n-aria="bookingButtonAria"
+          >
             <span data-i18n="bookingButton">Rezerwuj</span>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M5 12h14M13 6l6 6-6 6"/>
             </svg>
-          </a>
+          </button>
         </div>
       </section>
+
+      <div class="booking-options-modal" id="booking-options" data-booking-modal hidden>
+        <button class="booking-options-backdrop" type="button" aria-label="Zamknij" data-booking-close></button>
+        <div class="booking-options-card" role="dialog" aria-modal="true" aria-labelledby="booking-options-title" tabindex="-1">
+          <button class="booking-options-close" type="button" aria-label="Zamknij" data-booking-close data-i18n-aria="bookingChoiceCloseAria">
+            <span aria-hidden="true">×</span>
+          </button>
+          <span class="card-kicker">HardPoint booking</span>
+          <h3 id="booking-options-title" data-i18n="bookingChoiceTitle">Jak chcesz zarezerwować?</h3>
+          <p data-i18n="bookingChoiceText">Wybierz szybki telefon albo przejdź do rezerwacji online.</p>
+          <div class="booking-options-actions">
+            <a class="booking-option" href="tel:+48577826545">
+              <span data-i18n="bookingCall">Zadzwoń</span>
+              <strong>+48 577 826 545</strong>
+            </a>
+            <a class="booking-option booking-option--online" href="https://hardpoint.booking.enes.tech/" target="_blank" rel="noreferrer">
+              <span data-i18n="bookingOnline">Rezerwacja online</span>
+              <strong>hardpoint.booking.enes.tech</strong>
+            </a>
+          </div>
+        </div>
+      </div>
 
       <section id="passes" class="section-screen action-stage action-stage--split" data-zone="passes">
         <div class="stage-copy">
